@@ -1,0 +1,135 @@
+---
+title: "Schultze"
+output:
+  html_document: default
+  pdf_document: default
+date: '2022-08-08'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load the libraries
+library(limma)
+library(Glimma)
+library(edgeR)
+library(Mus.musculus)
+library(tictoc)
+# load function for Haemosphere
+source("RNASeq script.R")
+
+
+```
+
+
+```{r}
+tic("Datasets loading time")
+Schultze_expression <- read.delim("Haemosphere datasets/Schultze/Schultze_expression.txt",row.names = 1)
+Schultze_samples <- read.delim("Haemosphere datasets/Schultze/Schultze_samples.txt",row.names = 1)
+# Schultze_probes <- read.delim("Haemosphere datasets/Schultze/Schultze_probes.txt",col.names = c("V1","V2"))
+
+rownames(Schultze_samples) <- make.names(rownames(Schultze_samples))
+
+
+order <- match(rownames(Schultze_samples), colnames(Schultze_expression))
+Schultze_expression <- Schultze_expression[, order]
+
+
+x <- Schultze_expression
+
+replicateGroups <- Schultze_samples$celltype
+groups <- Schultze_samples$celltype
+toc()
+
+```
+
+
+
+
+```{r}
+# First group of cell types
+tic("First group runtime")
+group1 <- 'DC, GM-CSF + IL4, TNFa 800 u/ml, 72h'
+group2 <- 'DC, GM-CSF + IL4, none, 0h'
+
+query1 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=T, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query1)
+head(query1)
+
+```
+
+
+
+```{r}
+# Second group of cell types
+tic("Second group runtime")
+group1 <- 'Mac, GM-CSF, GC, 72h'
+group2 <- 'Mac, GM-CSF, HDL 2mg/ml, 6h'
+
+query2 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=T, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query2)
+head(query2)
+
+```
+
+```{r}
+# Third group of cell types
+tic("Third group runtime")
+group1 <- 'DC, GM-CSF + IL4, TNFa 800 u/ml, 72h'
+group2 <- 'T cell, CD3+, unstimulated, 0h'
+
+query3 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=T, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query3)
+head(query3)
+
+```
+
+```{r}
+# Fourth group of cell types
+tic("Forth group runtime")
+group1 <- 'T cell, CD4+CD25+, unstimulated, 0h'
+group2 <- 'T cell, CD45RA+, CD3/28, 96h'
+
+query4 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=T, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query4)
+head(query4)
+
+```
+
+
+```{r}
+# Fifth group of cell types
+tic("Fifth group runtime")
+group1 <- 'B cell, -, unstimulated, 0h'
+group2 <- 'DC, GM-CSF + IL4, TNFa 800 u/ml+ PGE2 1µg/ml+ P3C 1µg/ml, 72h'
+
+query5 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=T, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query5)
+head(query5)
+
+```
+
+
+```{r}
+# Sixth group of cell types
+tic("Sixth group runtime")
+group1 <- 'Mac, GM-CSF, IL10, 72h'
+group2 <- 'T cell, CD4+CD25-, unstimulated, 0h'
+
+query6 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=T, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query6)
+head(query6)
+
+```

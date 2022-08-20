@@ -1,0 +1,125 @@
+---
+title: "Haemopedia-Human-RNASeq"
+output:
+  html_document: default
+  pdf_document: default
+date: '2022-07-18'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load the libraries
+library(limma)
+library(Glimma)
+library(edgeR)
+library(Mus.musculus)
+library(tictoc)
+# load function for Haemosphere
+source("RNASeq script.R")
+
+
+```
+
+
+```{r}
+tic("Datasets loading time")
+Human.RNASeq_raw <- read.delim("Haemosphere datasets/Human/Haemopedia-Human-RNASeq_raw.txt",row.names = 1)
+Human.RNASeq_samples <- read.delim("Haemosphere datasets/Human/Haemopedia-Human-RNASeq_samples.txt",row.names = 1)
+  
+order <- match(rownames(Human.RNASeq_samples), colnames(Human.RNASeq_raw))
+Human.RNASeq_raw <- Human.RNASeq_raw[, order]
+
+x <- Human.RNASeq_raw
+
+replicateGroups <- Human.RNASeq_samples$cellTypeAbbreviation
+groups <- Human.RNASeq_samples$cellTypeAbbreviation
+toc()
+```
+
+
+
+```{r}
+tic("First group runtime")
+# First group of cell types
+group1 <- 'CD4T'
+group2 <- 'CD8T'
+
+query1 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=F, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query1)
+head(query1)
+
+
+```
+
+
+```{r}
+# Second group of query
+tic("Second group runtime")
+group1 <- 'Eo'
+group2 <- 'MemB'
+
+query2 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=F, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query2)
+head(query2)
+
+```
+
+```{r}
+# Third group
+tic("Third group runtime")
+group1 <- 'Mono'
+group2 <- 'myDC'
+
+query3 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=F, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query3)
+head(query3)
+```
+
+```{r}
+# Forth group
+tic("Forth group runtime")
+group1 <- 'myDC123'
+group2 <- 'NveB'
+
+query4 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=F, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query4)
+head(query4)
+```
+
+
+```{r}
+# Fifth group
+tic("Fifth group runtime")
+group1 <- 'NK'
+group2 <- 'Neut'
+
+query5 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=F, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query5)
+head(query5)
+
+```
+
+```{r}
+# Sixth group
+tic("Sixth group runtime")
+group1 <- 'MonoNonClassic'
+group2 <- 'pDC'
+
+query6 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=F, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query6)
+head(query6)
+
+```

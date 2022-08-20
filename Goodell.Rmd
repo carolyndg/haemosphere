@@ -1,0 +1,145 @@
+---
+title: "Goodell"
+output:
+  html_document: default
+  pdf_document: default
+date: '2022-08-08'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load the libraries
+library(limma)
+library(Glimma)
+library(edgeR)
+library(Mus.musculus)
+library(tictoc)
+# load function for Haemosphere
+source("RNASeq script.R")
+
+
+```
+
+
+```{r}
+tic("Datasets loading time")
+Goodell_expression <- read.delim("Haemosphere datasets/Goodell/Goodell_expression.txt",row.names = 1)
+Goodell_samples <- read.delim("Haemosphere datasets/Goodell/Goodell_samples.txt",row.names = 1)
+
+rownames(Goodell_samples) <- make.names(rownames(Goodell_samples))
+
+# Codes for trimming the dataset to goodell
+
+# Goodell_probes <- read.delim("Haemosphere datasets/Goodell/Goodell_probes.txt",col.names = c("V1","V2")
+
+# intersection <- intersect(rownames(Goodell_expression),Goodell_probes$V1)
+
+# Goodell_expression <- Goodell_expression[intersection,]
+
+#rownames(Goodell_expression) <- Goodell_probes[,2]
+# write_tsv(Goodell_expression, "Goodell_expression_modified.txt")
+
+
+order <- match(rownames(Goodell_samples), colnames(Goodell_expression))
+Goodell_expression <- Goodell_expression[, order]
+
+
+x <- Goodell_expression
+
+replicateGroups <- Goodell_samples$celltype
+groups <- Goodell_samples$celltype
+toc()
+
+
+```
+
+```{r}
+
+
+tic("First group runtime")
+# First group of cell types
+group1 <- 'B-Cell'
+group2 <- 'Granulocyte'
+
+query1 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=T, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query1)
+head(query1)
+
+```
+
+
+
+```{r}
+tic("Second group runtime")
+# Second group of cell types
+group1 <- 'Granulocyte'
+group2 <- 'HSC'
+
+query2 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=T, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query2)
+head(query2)
+
+```
+
+```{r}
+tic("Third group runtime")
+# Third group of cell types
+group1 <- 'HSC'
+group2 <- 'Monocyte'
+
+query3 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=T, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query3)
+head(query3)
+
+```
+
+```{r}
+tic("Forth group runtime")
+# Fourth group of cell types
+group1 <- 'N-Er'
+group2 <- 'NK'
+
+query4 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=T, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query4)
+head(query4)
+
+```
+
+
+```{r}
+tic("Fifth group runtime")
+# Fifth group of cell types
+group1 <- 'T-CD4-A'
+group2 <- 'T-CD4-N'
+
+query5 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=T, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query5)
+head(query5)
+
+```
+
+
+```{r}
+tic("Sixth group runtime")
+# Sixth group of cell types
+group1 <- 'T-CD8-A'
+group2 <- 'T-CD8-N'
+
+query6 <- haemosphere.topTable(x, replicateGroups, groups, group1, group2, microarray=T, 
+                                filterMinCPM=0.5, filterMinExpressedSamples=2, normalizationMethod='TMM', adjPCutoff=0.05, minRows=50)
+toc()
+summary(query6)
+head(query6)
+
+```
